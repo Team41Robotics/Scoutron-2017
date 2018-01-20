@@ -1,0 +1,39 @@
+<?php
+	session_start();
+	include("./sql.php");
+	include("./averages.php");
+	function ranking($team){
+		$metrics = ["Low_Goal_Auton", "High_Goal_Auton", "Gear_Placed_Auton", "Moved_Auton", "Low_Goal_Teleop", "High_Goal_Teleop", "Gear_Placed_Teleop", "Gear_Attempts_Total", 
+				"Climb_Teleop", "Speed", "Win", "Total_Game_Points", "Forty_kP", "All_Rotors", "Rotors_Turning"];
+		$raw_ranking = $team["Tie"] / 2;
+		for($i = 0; $i < count($metrics); $i++){
+			$raw_ranking += $team[$metrics];
+		}
+		$result = array("raw_ranking"=> $raw_ranking);
+		if ($team["Total_Game_Points"]) $result["Ph"] = (($team["High_Goal_Auton"] + $team["High_Goal_Teleop"]) / 3) / $team["Total_Game_Points"];
+			else $result["Ph"] = null;
+		if ($team["Gear_Placed_Teleop"]) $result["Pg"] = ($team["Gear_Placed_Auton"] + $team["Gear_Placed_Teleop"]) / (($team["Gear_Attempts_Total"] || $team["Gear_Placed_Teleop"]) + $team["Gear_Placed_Auton"]);
+			else $result["Pg"] 		if ($team["Total_Game_Points"]) $result["Pl"] = (($team["Low_Goal_Auton"] + $team["Low_Goal_Teleop"]) / 9) / $team["Total_Game_Points"];
+			else $result["Pl"] = null;
+		return $result;
+	}
+
+	if($_SESSION["logged_in"] == "true" && $_SESSION["admin"] == "true"){
+		/*$temp_data = getQuery("SELECT Team_Number FROM Match_Data");
+		$already_done = array();
+		for($i = 0; $i < count($temp_data); $i++){
+			//exec("Rscript /home/peter/avg_brandon.R " . $temp_data[$i]["Team_Number"]);
+			$teamNum = $temp_data[$i]["Team_Number"];
+			if(!array_search($teamNum, $already_done)){
+				calc_average($teamNum);
+				array_push($already_done, $teamNum);
+			}
+		}*/
+		$data = getQuery("SELECT * FROM Match_Averages");
+		for($i = 0; $i < count($data); $i++){
+			echo "Team " . $data[$i]["Team_Number"] . ": " . json_encode(ranking($data[$i])) . "<br/>";
+		}
+	} else {
+		echo '{"admin": false}';
+	}
+?>
