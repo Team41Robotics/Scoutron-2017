@@ -1,0 +1,171 @@
+<html>
+
+    <head>
+    	<script type="text/javascript" src="./form.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Raleway|Coda" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
+        <title>Scouting</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <script type="text/javascript">
+            function formCallback(data){
+                if (data.logged_in){
+			//document.getElemendById("status").innerHTML = "Successfully sent data on Team " + document.querySelector("input[name=Team_Number]").value;
+                    document.querySelector("form").reset();
+                    window.scrollTo(0, 0);
+                } else {
+                    alert("You must be logged in to submit data.");
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+    	<a href="./index.html" class="back">Back</a>
+         <h1>Scoutron<sup>&copy;</sup> Match 2017</h1>
+	<p id="status"></p>
+        <form action="./form/input_match.php" method="POST">
+        <table class="table" id="table">
+            <tr>
+                <td colspan="2">
+                    <input type="number" placeholder="# Team" name="Team_Number" min="0" step="1" />
+                    <label for="Team_Number">Enter team number above.
+                    
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Auton</td>
+            </tr>
+            <tr>
+                <td> 
+                    <input type="number" placeholder="Low Goal" name="Low_Goal_Auton" min="0" step="1"/>
+                    <label for="Low_Goal_Auton">Low Goals</label>
+                </td>
+                <td>
+                    <input type="number" placeholder="High Goal" name="High_Goal_Auton" min="0" step="1"/>
+                    <label for="High_Goal_Auton">High Goals</label>
+                </td></tr> 
+                <tr><td>
+                    <input type="checkbox" id="cbox2" value="1" name="Gear_Placed_Auton" />
+                    <label for="cbox2">Gear</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="cbox1" value="1" name="Moved_Auton" />
+                    <label for="cbox1">Move</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Teleop</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="number" placeholder="Low Goal" name="Low_Goal_Teleop" min="0" step="1" />
+                    <label for="Low_Goal_Teleop">Low Goals</label>
+                </td>
+                <td>
+                    <input type="number" placeholder="High Goal" name="High_Goal_Teleop" min="0" step="1" />
+                    <label for="High_Goal_Teleop">High Goals</label>
+                </td></tr>
+                <tr><td>
+                    <input type="number" placeholder="✓ Gears" name="Gear_Placed_Teleop" min="0" step="1" />
+                    <label for="Low_Goal_Auton">Successful Gears Placed</label>
+                </td>
+                <td>
+                    <input type="number" placeholder="Σ Gears" name="Gear_Attempts_Teleop" min="0" step="1" />
+                    <label for="Low_Goal_Auton">Total Gear Attempts</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+			<label for="Climb_Teleop">Climbing</label>
+                    <select name="Climb_Teleop">
+                        <option value="NULL">Unknown</option>
+                        <option value="0">Did not climb</option>
+                        <option value="1">Tried to climb</option>
+                        <option value="2">Successfully climbed</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+			<label for="Speed">Speed</label>
+			<select name="Speed">
+				<option value="NULL">Unknown</option>
+				<option value="0">VERY slow</option>
+				<option value="1">Slow</option>
+				<option value="2">Medium</option>
+				<option value="3">Fast</option>
+				<option value="4">Ludicrous Speed!</option>
+			</select>
+            </tr>
+            <tr>
+                <td colspan="2">Final Score</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+		<label for="Outcome">Final Outcome</label>
+		<select name="Outcome">
+			<option value="NULL">Unknown</option>
+			<option value="0">Lose</option>
+			<option value="1">Tie (1 RP)</option>
+			<option value="2">Win (2 RP)</option>
+		</select> 
+             </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="number" placeholder="Score" name="Total_Game_Points" min="0" step="1" /> Game Points
+                </td></tr>
+                <tr><td>
+                    <input type="checkbox" id="40kp" value="KP" name="40kP" />
+                    <label for="40kp"><b>40kP</b><br/>1 rank point</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="allrotors" value="addR" name="All_Rotors" />
+                    <label for="addR"><b>All rotors</b><br/>1 rank point</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label for="rotor">Rotor Levels</label>
+                    <select name="Rotors_Turning">
+                        <option value="-1" selected>Unknown</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan="6">Fouls</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="number" placeholder="Foul Points" id="fp" value="FP" name="Foul_Points" min="0" step="1" />
+                    <label for="fp">Foul Points caused</label>
+                </td>
+                <td>
+                    <input type="number" placeholder="Number" id="#fouls" value="fouls" name="Number_Of_Fouls" min="0" step="1" />
+                    <label for="#fouls">Total number of fouls</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+			<label for="Notes">Notes</label>
+                    <textarea cols="40" rows="5" class="notes scroll" placeholder="Type Notes Here" name="Notes"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                  
+                    <input type="submit" value="Update" />
+                    
+                </td>
+            </tr>
+        </table>
+        </form>
+    </body>
+
+</html>

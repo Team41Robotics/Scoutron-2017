@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="./form.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Raleway|Coda" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
+        <title>Scouting</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <style>
+            input {
+                display: block;
+                color: white;
+                margin: 1em auto;
+                padding: 0.6em;
+                padding-left: 1em;
+                border-radius: 5px;
+                outline: none;
+                border: none;
+                background-color: rgba(255, 255, 255, 0.1);
+                text-align: left;
+                width: 20em;
+            }
+            input[type="submit"] {
+                background-color: rgba(255, 255, 255, 0.1);
+                color:white;
+                text-align: center;
+            }
+        </style>
+        <script type="text/javascript">
+            var username, password;
+            window.addEventListener("load", function(){
+                username = document.getElementById("username");
+                password = document.getElementById("password");
+                username.value = localStorage.username || "";
+                password.value = localStorage.password || "";
+                formSubmit({}, document.querySelector("form"));
+            })
+            function formCallback(data){
+                console.log(data);
+                if (data["logged_in"]){
+                    localStorage.username = username.value;
+                    localStorage.password = password.value;
+                    document.getElementById("status").innerHTML = "Successfully logged in as " + data.username;
+                    username.value = "";
+                    password.value = "";
+                } else {
+                    document.getElementById("status").innerHTML = "Could not log in";
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+    	<a href="./index.html" class="back">Back</a>
+        <h1>Scoutron<sup>&copy;</sup> Login</h1>
+        <p id="status"></p>
+        <form action="" method="POST">
+                <input type="text" placeholder="Username" name="Username" id="username" />
+                <input type="password" placeholder="Password" name="Password" id="password" /><br/>
+                <input type="submit" value="Log in" />
+            </form>            
+    </body>
+    </html>

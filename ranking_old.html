@@ -1,0 +1,204 @@
+<html>
+
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Raleway|Coda" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
+        <style>
+            body {
+                font-family:Raleway, sns-serif;
+                font-size:20;
+                background: linear-gradient(#182848, #182848, #4b6cb7);
+                color: white;
+                width:100%;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }
+            .table, .table > tbody > tr, .table > tbody > tr > td, .table > tbody > tr > th {
+                text-align: center;
+                border: 1px dotted;
+                border-collapse: collapse;
+                padding:10px
+            }
+            .back {
+            	position: absolute;
+            	left: 5px;
+            	top: 5px;
+                font-size: 1em;
+                color: white;
+                background-color: rgba(255, 255, 255, .1);
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                margin: 5px;
+                padding: 5px;
+                text-decoration: none;
+            }
+        </style>
+        <script src="scouting_functions.js"></script>
+        <script>
+            var picked; //for Josh's 2nd request, THIS IS ACTUALLY GOING TO BE AN OBJECT PROPERTY
+            var selected; //for Josh's 3rd request, 
+            var managerTeams = [];
+
+            function createManagerTeams() {
+                var tds = document.querySelectorAll("#managerTeamsTable tr td button");
+                for (var i = 1; i < 5865; i++) {
+                    managerTeams.push(new team(parseInt(tds[i].innerText), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)));
+                }
+            }
+
+            function createSmallerTeamsTable() {
+                var managerTable = document.getElementById("#managerTeams tbody")
+                for (var i = 0; i < 10; i++) {
+                    var tr = document.createElement("tr");
+                    var id = document.createElement("td");
+                    var idBtn = document.createElement("button");
+                    idBtn.innerHTML = teams[i].teamID;
+                    id.appendChild(idBtn);
+                    score.innerHTML = teams[i].comparedScore;
+                    tr.appendChild(id);
+                    managerTable.appendChild(tr);
+                    id.onclick = function() {
+                        var idForData = this.innerHTML;
+                        setTeam(parseInt(this.innerText));
+                    };
+                }
+            }
+
+            function team_eliminator() // team Eliminator
+             {
+                for (var i = 0; i <= teamsInfo.numTeams; i++) {
+                    if ("TEAM ALLIANCE DATA COMMAND" != null) {
+                        delete teams[i];
+                    }
+                }
+            }
+            window.addEventListener("load", function() {
+                createManagerTeams();
+                sortTeams();
+                createSmallerTeamsTable();
+            });
+        </script>
+    </head>
+
+    <body>
+    	<a href="./index.html" class="back">Back</a>
+         <h1>
+
+            Scoutron Manager '17
+
+        </h1>
+        <table class="table" id="managerTeams">
+            <thead>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <td onload="createSmallerTeamsTable();" colspan="3">Teams
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1
+                    </td>
+                    <td id=1>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>#2
+                    </td>
+                    <td id=2>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>#3
+                    </td>
+                    <td id=3>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>#4
+                    </td>
+                    <td id=4>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>#5
+                    </td>
+                    <td id=5>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>#6
+                    </td>
+                    <td id=6>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>#7
+                    </td>
+                    <td id=7>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>#8
+                    </td>
+                    <td id=8>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>#9
+                    </td>
+                    <td id=9>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>#10
+                    </td>
+                    <td id=10>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+
+</html>

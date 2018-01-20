@@ -1,0 +1,76 @@
+<html>
+
+  <head>
+      <script type="text/javascript" src="./form.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway|Coda" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+canvas {
+  background-image: url("./img/map.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color:white;
+  border-radius:5px;
+}
+button {
+        background-color: rgba(255, 255, 255, 0.1);
+        color:white;
+        outline:none;
+        border:none;
+        padding:.35em;
+        font-family:raleway;
+        border-radius:5px;
+    
+}
+button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+        color:white;
+        outline:none;
+        border:none;
+        padding:.35em;
+        font-family:raleway;
+        border-radius:5px;
+}
+form {
+    display: inline-block;
+    margin-left:auto;
+    margin-right:auto;
+}
+.tab:after {
+  white-space: pre;
+  content: "       ";
+}
+    </style>
+
+    <title>Scoutron Markup</title>
+    <script type="text/javascript" src="./markup.js"></script>
+    
+  </head>
+
+  <body class="blac">
+  	<a href="./index.html" class="back">Back</a>
+      <h1>Scoutron<sup>&copy;</sup> Map Markup</h1>
+      <div>
+Choose a background image:
+<form>
+  <input type="radio" id="map" name="radio" checked/>Bird's-Eye
+  <input type="radio" id="labeled" name="radio" />Labeled
+  <input type="radio" id="3d" name="radio" />Perspective
+</form><b class="tab"></b>
+<input type="checkbox" id="eraser" />Eraser Toggle<b class="tab"></b>
+<button type="button" id="clear" class="markBtn">Clear Drawings</button><b class="tab"></b>
+<button type="button" id="save" class="markBtn">Save</button>
+</div>
+    <canvas id="canvas" width="0" height="0" style="border:solid black 1px;">
+  You really badly need to use a different browser.
+</canvas><br><br>
+
+<div style="display:none">
+<img src="./img/map.png" id="map" />
+<img src="./img/labeled.png" id="labeled" />
+<img src="./img/3d.png" id="3d" />
+</div>
+  </body>
+
+</html>

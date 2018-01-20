@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Acceleration Simulator</title>
+	<style>
+		body {  
+			background-size: 1em 1em;
+			background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
+			overflow: hidden;
+		}
+		canvas {
+			border: 5px black solid;
+			border-radius: 100%;
+		}
+	</style>
+	<script>
+		var canvas, ctx;
+		var box = {
+			x: 100,
+			y: 100,
+			r: 0,
+			width: 50,
+			height: 100
+		};
+		var keysNow = {};
+		window.addEventListener("load", function(){
+			canvas = document.querySelector("canvas");
+			canvas.width = document.body.offsetWidth;
+			canvas.height = document.body.offsetHeight;
+			ctx = canvas.getContext("2d");
+			ctx.fillStyle = "gray";
+			box.x = (canvas.width / 2) - (box.width / 2);
+			box.y = (canvas.height / 2) - (box.height / 2);
+			drawBox();
+			window.requestAnimationFrame(step);
+		})
+		document.addEventListener("keydown", function(event){
+			event.preventDefault();
+			keysNow[event.keyCode] = true;
+		});
+		document.addEventListener("keyup", function(event){
+			keysNow[event.keyCode] = false;
+		});
+		function step(){
+			if (keysNow[65]) { //A key
+				box.x--;
+			}
+			if (keysNow[68]) { //D key
+				box.x++;
+			}
+			if (keysNow[87]) { //W
+				box.y--;
+			}
+			if (keysNow[83]) { //S
+				box.y++;
+			}
+			if (keysNow[37]) { //Left arrow
+				box.r--;
+			}
+			if (keysNow[39]) { //Right arrow
+				box.r++;
+			}
+			drawBox();
+			window.requestAnimationFrame(step);
+		}
+		function rotate(){
+			var origin = (box.x + box.width/2) + "px " + (box.y + box.height/2) + "px";
+			var rotation = "rotate(" + box.r + "deg)";
+			canvas.style.msTransformOrigin = origin; // IE 9
+			canvas.style.webkitTransformOrigin = origin; // Chrome
+			canvas.style.mozTransformOrigin = origin; // Firefox
+			canvas.style.transformOrigin = origin;
+			canvas.style.msTransform = rotation; // IE 9
+			canvas.style.webkitTransform = rotation; // Chrome
+			canvas.style.mozTransform = rotation; // Firefox
+			canvas.style.transform = rotation;
+		}
+		function drawBox(){
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.beginPath();
+			rotate();
+			ctx.rect(box.x, box.y, box.width, box.height);
+			ctx.fill();
+		}
+	</script>
+</head>
+<body>
+	<canvas width="1000" height="1000"></canvas>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Raleway|Coda" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
+    <script type="text/javascript" src="./form.js"></script>
+    <title>Scoutron Manager</title>
+    <style>
+        .a{
+            display: inline-block;
+        }
+        .b{
+            display: inline-block;
+        }
+    </style>
+    <script type="text/javascript">
+        function formCallback(data){
+            if (data.admin){
+                //Do stuff with data
+            } else {
+                alert("Sorry, only administrator accounts can access this feature.");
+            }
+        }
+    </script>
+</head>
+
+<body>
+   <a href="./index.html" class="back">Back</a>
+   <h1>Scoutron<sup>&copy;</sup> List 2017</h1>
+   <table class="table" id="table">
+    <!--<tr>
+        <td colspan="4">Top Robots</td>
+    </tr>
+    <tr>
+        <td colspan="2">Focus</td>
+        <td colspan="2">Must</td>
+    </tr>
+
+    <tr>
+        <form action="" method="POST">
+            <td>
+                <input type="checkbox" name="Focus_Gear" value="Gear"/>
+                <label for="Gear">Gear</label>
+                <input type="checkbox" name="Focus_Climb" value="Climb">
+                <label for="Climb">Climb</label>
+            </td>
+            <td>
+                <form>
+                    <input type="radio" id="High" name="Focus_Goal" value="high" class="a">High Goal
+                    <label for="High"></label><br>
+                    <input type="radio" id="Low" name="Focus_Goal" value="low" class="b">Low Goal
+                    <label for="Low"></label>
+                </form>
+            </td>
+            <td>
+                <input type="checkbox" name="Must_Gear" value="Gear"/>
+                <label for="Gear">Gear</label>
+                <input type="checkbox" name="Must_Climb" value="Climb">
+                <label for="Climb">Climb</label>
+            </td>
+            <td>
+                <input type="radio" id="High" name="Must_Goal" value="high" class="a">High Goal
+                <label for="High"></label><br>
+                <input type="radio" id="Low" name="Must_Goal" value="low" class="b">Low Goal
+                <label for="Low"></label>
+            </td>
+        </form>
+    </tr>-->
+    <!--Peter's code-->
+    <tr>
+        <td colspan="4">
+            Input most important abilities for alliances:<br/>
+            1.
+                <select class="ranking" name="Importance_1">
+                    <option value="NA" selected>Not Applicable</option>
+                    <option value="High_Goal">High Goal</option>
+                    <option value="Low_Goal">Low Goal</option>
+                    <option value="Gear">Gear</option>
+                    <option value="Climb">Climb</option>
+                </select>
+            Weight Subtract:<input type="number" placeholder="0.0-1.0" name="Weight_Subtract" />
+        </td>
+    </tr>
+    <!--End Peter's code-->
+    <tr>
+    </tr>
+    <tr>
+        <td colspan = "4">
+            Best Matches
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #1
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #2
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #3
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #4
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #5
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #6
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #7
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #8
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #9
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            #10
+        </td>
+        <td colspan = "3">
+
+        </td>
+    </tr>
+</table>
+</body>
+
+</html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Scouting GUI v1.1</title>
+        <script type="text/javascript" src="./normCDF.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Raleway|Coda" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
+        <style>
+            div.scroll {
+                background-color: #C3C8DE;
+                height: 550px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+                margin-bottom: 15px;
+                margin-top: 10;
+                margin-left: 5px;
+                text-align: initial;
+                border-radius: 8px;
+                padding: 5px;
+                float: left;
+                height: 550px;
+                background: rgba(255, 255, 255, 0.1);
+                overflow-y: scroll;
+                color: white;
+                width: 90%;
+           }
+            h1 {
+                text-align:center;
+                color: white;
+                margin: 10px;
+                background: -webkit-linear-gradient(white, #B3B6BB);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                padding: 4px;
+                font-family:Raleway;
+                font-size: 4em;
+            }
+            #prettyShortRow {
+                height: 7em;
+            }
+            .back {
+            	position: absolute;
+            	left: 5px;
+            	top: 5px;
+                font-size: 1em;
+                color: white;
+                background-color: rgba(255, 255, 255, .1);
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                margin: 5px;
+                padding: 5px;
+                text-decoration: none;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script>
+            var teamTable;
+            class team {
+                constructor(teamID, climbPerc, avgScoreGear, avgScoreLow, avgScoreHigh, avgScoreTotal, highPerc, lowPerc, highToLow, allianceScore, avgAllianceScore, driveType, picked) {
+                    //Part of compare fucntion
+                    this.climbPerc = climbPerc; // percent of climbs made * 100.
+                    this.avgScoreGear = avgScoreGear; // average score from gears.
+                    this.avgScoreLow = avgScoreLow; // average score from shooting in low goal.
+                    this.avgScoreHigh = avgScoreHigh; // average score from shooting in high goal.
+                    this.avgScoreTotal = avgScoreTotal; // average of total score from games
+                    this.highPerc = highPerc;
+                    this.lowPerc = lowPerc;
+                    this.highToLow = highToLow;
+                    this.picked = picked;
+                    this.allianceScore = allianceScore;
+                    this.avgAllianceScore = avgAllianceScore;
+
+                    //Not Compare 
+                    this.driveType = driveType; //int, we're giving each type of drive an ID
+                    this.comparedScore = 0;
+                    this.teamID = teamID;
+                }
+            }
+
+            var weight = {
+                "climb": 1,
+                "gear": 1,
+                "low": 1,
+                "high": 1,
+                "total": 1
+            }; // Weights for the importance of each of the teams' data. For ex, if climbing percent is more important to us, assign it a higher weight.
+
+            function clearTeams() {
+                var teamTable = document.querySelector("#teams tbody");
+                teamTable.innerHTML = "";
+                var tr = document.createElement("tr");
+                var idTd = document.createElement("td");
+                var idBtn = document.createElement("button");
+                idTd.appendChild(idBtn);
+                tr.appendChild(idTd);
+                var scoreTd = document.createElement("td");
+                var scoreBtn = document.createElement("button");
+                scoreTd.appendChild(scoreBtn);
+                tr.appendChild(scoreTd);
+
+                idBtn.innerHTML = "Team";
+                idBtn.onclick = function() {
+                    sortByID();
+                    createTeamTable();
+                };
+                scoreBtn.innerHTML = "Compared Score";
+                scoreBtn.onclick = function() {
+                    sortTeams();
+                    createTeamTable();
+                };
+                tr.innerHTML += "<td><button>Weight</button></td>";
+                teamTable.appendChild(tr);
+            }
+
+            function setWeights() {
+                clearTeams();
+                var climbW = document.getElementById("climbW").value;
+                var gearW = document.getElementById("gearW").value;
+                var lowW = document.getElementById("lowW").value;
+                var highW = document.getElementById("highW").value;
+                var totalW = document.getElementById("totalW").value;
+                weight.climb = parseFloat(climbW) || 0;
+                weight.gear = parseFloat(gearW) || 0;
+                weight.low = parseFloat(lowW) || 0;
+                weight.high = parseFloat(highW) || 0;
+                weight.total = parseFloat(totalW) || 0;
+                sortTeams();
+                createTeamTable();
+            }
+             //var teamsGear = [];
+             //var teamsShoot = [];
+            var teamsInfo = {
+                numTeams: 300
+            } //Stores info about the teams ---------------- Num of teams will change for actual num of teams - 6768
+            var teams = []; //An array where each element is a team object as defined above.
+
+            function createTeams() { //we should probably just clone the one array, but I'm too lazy for that
+                /*for (var i = 0; i < teamsInfo.numTeams; i++) {
+          teams[i] = new team(Math.round(Math.random() * 1000), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)); //filling teams with random data
+          //we will need to file IO some data in here instead of random data.
+
+        }*/
+                var tds = document.querySelectorAll("#teams tr td button");
+                for (var i = 1; i < tds.length; i++) {
+                    teams.push(new team(parseInt(tds[i].innerText), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)));
+                }
+            }
+
+            function sortTeams() {
+                teams.sort(compareTeamsTotal);
+            }
+
+
+            function compareTeamsTotal(b, a) //two teams passed in by sorting function. Return utput eihter 1, -1 ,0     //compare function 
+             {
+                aSum = (a.climbPerc * weight.climb) + (a.avgScoreGear * weight.gear) + (a.avgScoreLow * weight.low) + (a.avgScoreHigh * weight.high) + (a.avgScoreTotal * weight.total);
+                bSum = (b.climbPerc * weight.climb) + (b.avgScoreGear * weight.gear) + (b.avgScoreLow * weight.low) + (b.avgScoreHigh * weight.high) + (b.avgScoreTotal * weight.total);
+                a.comparedScore = aSum;
+                b.comparedScore = bSum;
+                if (aSum > bSum) {
+                    return 1;
+                } else if (aSum == bSum) {
+                    return 0;
+                }
+                return -1;
+            }
+            var currentTeam = 0; // tells what team num the viewer is currently seeing
+
+            function setTeam(n) {
+                currentTeam = n;
+                document.getElementById("selectedTeam").innerHTML = "Team " + n;
+                var dataId;
+                for (var check = 0; check < teams.length; check++) {
+                    if (teams[check].teamID == currentTeam) {
+                        dataId = check;
+                        break;
+                    }
+                }
+                document.getElementById("climb").innerHTML = teams[check].climbPerc;
+                document.getElementById("high").innerHTML = teams[check].avgScoreHigh;
+                document.getElementById("gear").innerHTML = teams[check].avgScoreGear;
+                document.getElementById("low").innerHTML = teams[check].avgScoreLow;
+                document.getElementById("total").innerHTML = teams[check].comparedScore;
+                console.log(teams[check].comparedScore);
+            }
+
+            var weightStat = "";
+
+            function createTeamTable() {
+                clearTeams();
+                var teamTable = document.querySelector("#teams tbody");
+                for (var i = 0; i < teams.length; i++) {
+                    var tr = document.createElement("tr");
+                    var id = document.createElement("td");
+                    var score = document.createElement("td");
+                    var weight = document.createElement("td");
+                    var idBtn = document.createElement("button");
+                    idBtn.innerHTML = teams[i].teamID;
+                    id.appendChild(idBtn);
+                    score.innerHTML = teams[i].comparedScore;
+                    weight.innerHTML = teams[i][weightStat];
+                    tr.appendChild(id);
+                    tr.appendChild(score);
+                    tr.appendChild(weight);
+                    teamTable.appendChild(tr);
+                    id.onclick = function() {
+                        
+                        var idForData = this.innerHTML;
+                        setTeam(parseInt(this.innerText));
+                    };
+                }
+            }
+
+            function compareByID(a, b) //similar to compare teams total
+             {
+                if (a.teamID > b.teamID) {
+                    return 1;
+                } else if (a.teamID == b.teamID) {
+                    return 0;
+                }
+                return -1;
+            }
+
+            function sortByID() //similar to sortTeams
+             {
+                teams.sort(compareByID);
+            };
+
+            window.addEventListener("load", function() {
+                createTeams();
+                sortTeams();
+                createTeamTable();
+                var dropdowns = document.querySelectorAll(".dropdown-content a");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var dropdown = dropdowns[i];
+                    dropdown.addEventListener("click", function(event) {
+                        event.preventDefault();
+                        setTableDisplay(this.innerHTML, this.id);
+                    });
+                }
+            });
+
+            function setTableDisplay(txt, key) {
+                event.preventDefault();
+                weightStat = key;
+                document.getElementById("data-title").innerHTML = "All Teams<br/>" + txt;
+                createTeamTable();
+                document.querySelector("#teams tr:nth-child(1) td:nth-child(3)").innerHTML = txt;
+            }
+
+
+            /*$(document).ready(function() {
+          $(function() {
+              $('#accord').accordion();
+          });
+      };*/
+        </script>
+
+    </head>
+
+    <body>
+    
+    <a href="./index.html" class="back">Back</a>
+        <h1>Scoutron<sup>&copy;</sup> Index 2017</h1>
+        <table class="table" id="table">
+            <thead>
+                
+            </thead>
+            <tbody>
+                <tr class="firstRow">
+                    <td width="33%">
+                         <a href="https://www.thebluealliance.com/insights" target="_blank">The Blue Alliance</a>
+                    </td>
+                    <td width="33%">
+                         <a href="http://team41robotics.com/" target="_blank">Team 41 Robotics</a>
+                        <div class="dropdown">
+                            <button class="dropbtn">Score Values</button>
+                            <div class="dropdown-content">
+                                 <a href="#" id="highPerc">Successful High Goal Percentage</a>
+                                 <a href="#" id="lowPerc">Successful Low Goal Percentage</a>
+                                 <a href="#" id="highToLow">High Goal/Low Goal Ratio</a>
+                                 <a href="#" id="allianceScore">% of Alliance Score</a>
+                                 <a href="#" id="avgAllianceScore">Average % Alliance Score</a> 
+                            </div>
+                        </div>
+                        <br/>
+                        <br>
+                    </td>
+                    <td width="33%"><a href="https://goo.gl/forms/qbGmODSJmhTYVLM23" target="_blank">Scouting Form</a>
+                    </td>
+                </tr>
+                <tr>
+
+                    <th>
+                        <p id="data-title">All Teams</p>
+                    </th>
+                    <th rowspan="2">
+                        <br/>Weighted Importance
+                        <center>
+                            <form onsubmit="event.preventDefault();setWeights();">
+                                <table id="weightTable">
+                                    <tbody>
+                                        <tr>
+                                            <td>Climbing:</td>
+                                            <td>
+                                                <input type="number" id="climbW" class="weight-btn" value="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gears:</td>
+                                            <td>
+                                                <input type="number" id="gearW" class="weight-btn" value="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Low goal:</td>
+                                            <td>
+                                                <input type="number" id="lowW" class="weight-btn" value="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>High goal:</td>
+                                            <td>
+                                                <input type="number" id="highW" class="weight-btn" value="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total points:</td>
+                                            <td>
+                                                <input type="number" id="totalW" class="weight-btn" value="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="setbut" colspan="2">
+                                                <input type="submit" value="Set Weights" class="Sumbit" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </center>
+                    </th>
+                </tr>
+                <tr id="prettyShortRow">
+                    <td rowspan="3">
+                        <div class="scroll" id="shooter">
+                            <table class="data" id="teams">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <button onclick="sortByID();createTeamTable();">Team</button>
+                                        </td>
+                                        <td>
+                                            <button onclick="sortTeams();createTeamTable();">Compared Score</button>
+                                        </td>
+                                        <td>
+                                            <button>Weight</button>
+                                        </td>
+                                    </tr>
+                                    <!--<?php
+                	function getTBA($path){
+                		$ch = curl_init();
+			    curl_setopt($ch, CURLOPT_URL,"https://www.thebluealliance.com/api/v2/" . $path);
+			    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			    curl_setopt($ch, CURLOPT_HEADER, true);
+			    
+			    $headers = [
+				'X-TBA-App-Id: frc41:scouting-gui-php:0.1'
+			    ];
+			    
+			    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			    
+			    $response = curl_exec ($ch);
+			    
+			    $info = curl_getinfo($ch);
+			    
+			    curl_close ($ch);
+			    $body = substr($response, $info["header_size"]);
+			    return $body;
+                	}
+                	$allTeamsListed = false;
+                	$teamPage = 0;
+                	function newCell($text){
+                		return "<td>" . $text . "</td>";
+                	}
+                	while (!$allTeamsListed){
+                		$data = json_decode(getTBA("teams/" . $teamPage), true);
+                		if (sizeof($data) > 0){
+                			foreach ($data as $teamData){
+                				if ($teamData['nickname']){
+		        				//Create row
+		        				echo "<tr>";
+		        				//Create cells
+		        				echo "<td";
+		        				foreach ($teamData as $key => $value){
+		        					echo " data-" . $key . "='" . $value . "'";
+		        				}
+		        				echo "><button>" . substr($teamData['key'], 3) . "</button></td>";
+		        				//End row
+		        				echo "</tr>";
+                				}
+                			}
+                			$teamPage++;
+                		} else {
+                			$allTeamsListed = true;
+                		}
+                	}
+                ?>-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                    <td rowspan="3">
+                        <div class="scroll">
+                            <table class="data" id="selectedData">
+                                <tbody>
+                                    <tr>
+                                        <td>Climb
+                                        </td>
+                                        <td id="climb">
+            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gear
+                                        </td>
+                                        <td id="gear">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>High
+                                        </td>
+                                        <td id="high">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Low
+                                        </td>
+                                        <td id="low">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total
+                                        </td>
+                                        <td id="total">
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="shortRow">
+                    <td id="selectedTeam">Select a team to view.
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="1" id="graph" >Graphs and/or charts From Neelay and/or Chad and/or Manthan</td>
+                </tr>
+                <tr>
+                    <td colspan="3">The best team for you is...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+
+</html>

@@ -1,0 +1,118 @@
+<html>
+
+    <head>
+        <script type="text/javascript" src="./form.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Raleway|Coda" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
+        <title>Pit Input</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <style>
+            .f{
+                width:15em;
+            }
+            .key {
+                position: relative;
+                top: 0;
+                right: 0;
+                float: right;
+                margin: 0px;
+            }
+        </style>
+        <script type="text/javascript">
+            function formCallback(data){
+                if (data.logged_in){
+                    document.querySelector("form").reset();
+                    window.scrollTo(0, 0);
+                } else {
+                    alert("You must be logged in to submit data.");
+                }
+            }
+        </script>
+    </head>
+ 
+    <body>
+    	<a href="./index.html" class="back">Back</a>
+        <h1>Scoutron<sup>&copy;</sup> Pit 2017</h1>
+        <form action="" method="POST" enctype="multipart/form-data">
+        <table class="table" id="table">
+            <tr>
+                <td>Remember: When spying on teams, be sneaky!</td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="Team_Number">Enter team number</label>
+                    <input type="number" placeholder="Team #" name="Team_Number" min="0" step="1" />
+                </td>
+            </tr> 
+            <tr>
+                <td>
+                    <label for="Wheel_Base">Type of Wheel Base</label>
+                    <select name="Wheel_Base">
+                        <option value="none" selected>Select...</option>
+                        <option value="tank">Normal Tank</option>
+                        <option value="holonomic">Holonomic</option>
+                        <option value="mecanum">Mecanum</option>
+                        <option value="swerve">Swerve Drive</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <a class="key" href="./wheel_base_key.html" style="margin:0;">
+                        Images of Types of Wheel Bases
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="Wheel_Type">Wheel Type</label>
+                    <select name="Wheel_Type">
+                        <option value="none" selected>Select...</option>
+                        <option value="treads">Treads</option>
+                        <option value="pneumatic">Pneumatic</option>
+                        <option value="mecanum">Mecanum</option>
+                        <option value="plastic">Plastic</option>
+                        <option value="rubber">Rubber</option>
+                        <option value="tiTim">Other</option>
+                    </select>
+                    <a class="key" href="./wheel_type_key.html" style="margin:0;">
+                        Images of Types of Wheels
+                    </a>
+                </td>
+            </tr>
+          <tr>
+                <td>
+                    <label>Check if the robot can pick up Balls</label>
+                    <input type="checkbox" id="shoot" value="shoot" name="Ball_Pickup">
+                </td>
+            </tr> 
+            <tr>
+                <td>
+                    <label>Check if the robot can pick up Gears</label>
+                    <input type="checkbox" id="gear" value="gear" name="Gear_Pickup">
+                </td>
+            </tr> 
+            <tr>
+                <td>
+                    <label>Check if the robot can climb</label>
+                    <input type="checkbox" id="climb" value="climb" name="Climb">
+                </td>
+            </tr> 
+            <tr>
+                <td>
+                  <label>Additional Information</label><br>&nbsp;</br> 
+                    <textarea name="Notes" cols="40" rows="5" class="notes scroll" placeholder="Type Notes Here"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Upload Image</label>
+                    <input type="file" name="Image" accept="image/*" class="f">
+
+                </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Update" /></td>
+            </tr>
+        </table>
+        </form>
+    </body>
+
+</html>

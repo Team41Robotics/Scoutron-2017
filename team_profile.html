@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<link href="https://fonts.googleapis.com/css?family=Raleway|Coda" rel="stylesheet" />
+  <link href="./style.css" rel="stylesheet" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    	<script type="text/javascript" src="./form.js"></script>
+    	<script type="text/javascript" src="./team_profile.js"></script>
+    	<title>Scoutron Team Profiles</title>
+    	<style>
+    		td:not(span){
+    			font-weight: bold;
+    		}
+            td span {
+                display: block;
+                font-weight: normal;
+            }
+    	</style>
+</head>
+         
+<body>
+    	<a href="./index.html" class="back">Back</a>
+     <h1>Scoutron<sup>&copy;</sup> Team Profiles</h1>
+     <form action="" method="POST">
+	     <input type="number" name="Team_Number" placeholder="Team #" />
+	     <input type="submit" value="Fetch Data" />
+     </form>
+    <table class="table" id="team_profile">
+        <tr>
+            <td colspan="21" id="Team_Number">Team Number</td>
+            <td colspan="63" id="Team_Name">Team Name</td>
+        </tr>
+        <tr>
+            <td colspan="60">PIT DATA</td>
+            <td colspan="24" rowspan="2" id="Robot_Pic">PIC OF ROBOT</td>
+        </tr>
+
+        <tr>
+            <td colspan="12" id="Wheel_Base">Wheel Base</td>
+            <td colspan="12" id="Wheel_Type">Wheel Type</td>
+            <td colspan="12" id="Ball_Pickup">Ball Pickup</td>
+            <td colspan="12" id="Gear_Pickup">Gear Pickup</td>
+            <td colspan="12" id="Climb">Climb</td>
+        </tr>
+
+        <tr>
+            <td colspan="84">AUTON DATA</td>
+        </tr>
+        <tr>
+            <td colspan="21" id="High_Goal_Auton">High Goals</td>
+            <td colspan="21" id="Low_Goal_Auton">Low Goals</td>
+            <td colspan="21" id="Gear_Placed_Auton">Gear</td>
+            <td colspan="21" id="Moved_Auton">Move</td>
+        </tr>
+        <tr>
+            <td colspan="84">TELE-OP DATA</td>
+        </tr>
+        <tr>
+            <td colspan="21" id="High_Goal_Teleop">High Goals</td>
+            <td colspan="21" id="Low_Goal_Teleop">Low Goals</td>
+            <td colspan="21" id="Gear_Placed_Teleop">Gears Placed</td>
+            <td colspan="21" id="Gear_Attempts_Teleop">Gears Attempts Total</td>
+        </tr>
+        <tr>
+            <td colspan="42" id="Climb_Teleop">Climbing</td>
+            <td colspan="42" id="Speed">Speed</td>
+        </tr>
+        <tr>
+            <td colspan="42" id="Foul_Points">Foul Points</td>
+            <td colspan="42" id="Number_Of_Fouls">Foul Number</td>
+        </tr>
+        <tr>
+            <td colspan="42" id="Pit_Notes">Pit Notes</td>
+            <td colspan="42" id="Match_Notes">Match Notes</td>
+        </tr>
+        <tr>
+        	<form action="" method="POST">
+            <td colspan="60">
+                <label for="Select">What is this robot best suited for?</label>
+                <select name="Select">
+                    <option value="none" selected disabled>Select...</option>
+                    <option value="High Shooter">High Shooter</option>
+                    <option value="Low Shooter">Low Shooter</option>
+                    <option value="Gear">Gear</option>
+                    <option value="Mixed">Mixed</option>
+                    <option value="Defensive">Defensive</option>
+
+                </select>
+                </td>
+                <td colspan="24">
+                    <input type="submit" value="Fetch" />
+                </td>
+            </form>
+        </tr>
+
+
+
+
+
+    </table>
+</body>
+</html>

@@ -1,0 +1,56 @@
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+var table, tds;
+window.addEventListener("load", function(){
+	table = document.getElementById("team_profile");
+	var tds = document.getElementsByTagName("td");
+	for (var i = 0; i < tds.length; i++){
+		tds[i].appendChild(document.createElement("span"));
+	}
+});
+function displayData(data){
+	for (var id in data){
+		if (data[id]) document.getElementById(id).getElementsByTagName("span")[0].innerHTML = data[id];
+	}
+}
+function formCallback(data){
+	if (data.admin){
+		var displays = {
+			"Team_Number": data.Match_Data.Team_Number,
+			"Team_Name": "Team " + data.Match_Data.Team_Number,
+			"High_Goal_Auton": data.Match_Data.High_Goal_Auton,
+			"Low_Goal_Auton": data.Match_Data.Low_Goal_Auton,
+			"Gear_Placed_Auton": (data.Match_Data.Gear_Placed_Auton * 100) + "% of the time",
+			"Moved_Auton": (data.Match_Data.Gear_Placed_Auton * 100) + "% of the time",
+			"High_Goal_Teleop": data.Match_Data.High_Goal_Teleop,
+			"Low_Goal_Teleop": data.Match_Data.Low_Goal_Teleop,
+			"Gear_Placed_Teleop": data.Match_Data.Gear_Placed_Teleop,
+			//"Wheel_Base": data.Pit_Data.Wheel_Base.capitalize(),
+			//"Wheel_Type": data.Pit_Data.Wheel_Type.capitalize(),
+			//"Ball_Pickup": (parseInt(data.Pit_Data.Ball_Pickup) == 1) ? "Yes" : "No",
+			//"Gear_Pickup": (parseInt(data.Pit_Data.Gear_Pickup) == 1) ? "Yes" : "No",
+			//"Climb": (parseInt(data.Pit_Data.Climb) == 1) ? "Yes" : "No",
+			"Climb_Teleop": data.Match_Data.Climb_Teleop + " on average, ,
+			"Speed": (data.Match_Data.Speed / 4 * 100) + "%",
+			"Pushing_Power": data.Match_Data.Pushing_Power,
+			"Agility": data.Match_Data.Agility,
+			"Foul_Points": data.Match_Data.Foul_Points,
+			"Number_Of_Fouls": data.Match_Data.Number_Of_Fouls,
+			//"Pit_Notes": data.Pit_Data.Notes,
+			"Match_Notes": data.Match_Data.Notes
+		};
+		if (data.Pit_Data){
+			displays.Wheel_Base = data.Pit_Data.Wheel_Base.capitalize();
+			displays.Wheel_Type = data.Pit_Data.Wheel_Type.capitalize();
+			displays.Ball_Pickup = parseInt(data.Pit_Data.Ball_Pickup) == 1 ? "Yes" : "No";
+			displays.Gear_Pickup = parseInt(data.Pit_Data.Gear_Pickup) == 1 ? "Yes" : "No";
+			displays.Climb = parseInt(data.Pit_Data.Climb) == 1 ? "Yes" : "No";
+			displays.Pit_Notes = data.Pit_Data.Notes;
+		}
+		displayData(displays);
+	} else {
+		alert("Sorry, only administrator accounts can access this feature.");
+	}
+}
